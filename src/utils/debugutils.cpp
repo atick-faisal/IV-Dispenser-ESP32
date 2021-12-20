@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "logger.h"
 
 void initializeDebugLog() {
 #ifdef DEBUG

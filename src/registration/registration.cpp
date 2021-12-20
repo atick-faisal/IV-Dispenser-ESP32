@@ -6,7 +6,14 @@ void inialializeBluetooth() {
     debugMessage(SUCCESS, "Bluetooth initialized ... ");
 }
 
+void _initiateMqtt() {
+    debugMessage(LOADING, "Starting MQTT ... ");
+    client = getMqttClient();
+    registrationMode = false;
+}
+
 void _registerDevice() {
+    debugMessage(LOADING, "Registering device ... ");
     String room = registrationRequest["room"];
     String ssid = registrationRequest["ssid"];
     String pass = registrationRequest["pass"];
@@ -16,6 +23,7 @@ void _registerDevice() {
         credentials.ssid = ssid;
         credentials.pass = pass;
         saveWiFiCredentials(credentials);
+        _initiateMqtt();
     }
 }
 

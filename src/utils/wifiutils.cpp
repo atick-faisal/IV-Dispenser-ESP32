@@ -1,5 +1,9 @@
 #include "utils.h"
 
+void initializeWiFi() {
+    WiFi.mode(WIFI_STA);
+}
+
 bool connectToWiFi(const char* ssid, const char* pass) {
     debugMessage(LOADING, "Connecting to WiFi ... ");
     WiFi.begin(ssid, pass);

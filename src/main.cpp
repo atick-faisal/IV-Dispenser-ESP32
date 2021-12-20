@@ -8,25 +8,25 @@
 
 #include "config/config.h"
 #include "utils/utils.h"
+#include "registration/registration.h"
 
-EspMQTTClient client = EspMQTTClient(
-    "WifiSSID",
-    "WifiPassword",
-    "192.168.1.100",
-    "MQTTUsername",
-    "MQTTPassword",
-    "TestClient");
 
-void onConnectionEstablished() {}
+
 
 void setup() {
     initializeDebugLog();
+    inialializeBluetooth();
+    initializeWiFi();
+    registrationMode = !isWiFiCredentialsAvailable();
+    if (!registrationMode) {
+        client = getMqttClient();
+    }
 }
 
 void loop() {
-    debugMessage(INFO, "This is info ...");
-    debugMessage(LOADING, "Loading something ... ");
-    debugMessage(SUCCESS, "Successfully loaded ...");
-    debugMessage(ERROR, "Error occuered!");
-    delay(5000);
+    if (registrationMode) {
+        handleBluetoothTrafic();
+    } else {
+        client.loop();
+    }
 }

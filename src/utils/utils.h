@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <WiFi.h>
+#include <EspMQTTClient.h>
 
 #include "../config/config.h"
 
@@ -30,10 +31,12 @@ void initializeDebugLog();
 void debugMessage(DebugLevel debugLevel, const String message);
 
 // ... WiFi utils
+void initializeWiFi();
 bool connectToWiFi(const char* ssid, const char* pass);
 
 // ... MQTT client utils
 String getDeviceId();
+EspMQTTClient getMqttClient();
 
 // ... EEPROM utils
 bool isWiFiCredentialsAvailable();

@@ -13,4 +13,7 @@ BluetoothSerial Bluetooth;
 StaticJsonDocument<256> registrationRequest;
 StaticJsonDocument<16> registrationResponse;
 
+void inialializeBluetooth();
+void handleBluetoothTrafic();
+
 #endif

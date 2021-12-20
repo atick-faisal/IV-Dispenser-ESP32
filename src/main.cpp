@@ -2,12 +2,11 @@
 #include <EEPROM.h>
 #include <WiFi.h>
 
-#define DEBUG
-
 #include "EspMQTTClient.h"
 // #include <ArduinoJson.h>
 // #include <PubSubClient.h>
 
+#include "config/config.h"
 #include "utils/utils.h"
 
 EspMQTTClient client = EspMQTTClient(
@@ -21,10 +20,13 @@ EspMQTTClient client = EspMQTTClient(
 void onConnectionEstablished() {}
 
 void setup() {
-    Serial.begin(115200);
+    initializeDebugLog();
 }
 
 void loop() {
-    Serial.println(isWiFiCredentialsAvailable());
-    delay(10000);
+    debugMessage(INFO, "This is info ...");
+    debugMessage(LOADING, "Loading something ... ");
+    debugMessage(SUCCESS, "Successfully loaded ...");
+    debugMessage(ERROR, "Error occuered!");
+    delay(5000);
 }

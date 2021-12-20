@@ -17,7 +17,8 @@ struct WiFiCredentials {
 String getDeviceId();
 
 // ... EEPROM utils
-WiFiCredentials getWiFiCredentials();
 bool isWiFiCredentialsAvailable();
+WiFiCredentials getWiFiCredentials();
+void saveWiFiCredentials(WiFiCredentials credentials);
 
 #endif

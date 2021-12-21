@@ -12,6 +12,7 @@ extern bool mqttConnected;
 unsigned long looper = millis();
 
 void setup() {
+    pinMode(RESET_PIN, INPUT_PULLDOWN);
     initializeDebugLog();
     initializeEEPROM();
     inialializeBluetooth();
@@ -19,6 +20,8 @@ void setup() {
     registrationMode = !isWiFiCredentialsAvailable();
     if (!registrationMode) {
         configureMqttClient();
+    } else {
+        debugMessage(INFO, "Starting registration process ... ");
     }
 }
 
@@ -33,6 +36,7 @@ void loop() {
                 monitorDispenserState();
             }
         }
+        handleReset();
     }
 }
 

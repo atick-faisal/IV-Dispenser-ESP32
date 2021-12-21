@@ -42,6 +42,11 @@ void _registerDevice() {
         credentials.ssid = ssid;
         credentials.pass = pass;
         saveWiFiCredentials(credentials);
+
+         // ... stop bluetooth
+        delay(PAUSE_AFTER_REGISTRATION);
+        btStop();
+        
         _initiateMqtt();
     } else {
         debugMessage(ERROR, "Registration failed!");

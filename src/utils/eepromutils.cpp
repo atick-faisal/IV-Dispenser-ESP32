@@ -41,3 +41,12 @@ void saveWiFiCredentials(WiFiCredentials credentials) {
     EEPROM.commit();
     debugMessage(SUCCESS, "Successfully saved credentials ... ");
 }
+
+void clearWiFiCredentials() {
+    debugMessage(LOADING, "Deleting credentials ... ");
+    EEPROM.writeString(ROOM_LOCATION, "");
+    EEPROM.writeString(SSID_LOCATION, "");
+    EEPROM.writeString(PASS_LOCATION, "");
+    EEPROM.commit();
+    debugMessage(SUCCESS, "Successfully deleted credentials ... ");
+}

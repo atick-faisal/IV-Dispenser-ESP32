@@ -23,6 +23,7 @@ void _configureWillMessage(String deviceId, String room) {
 }
 
 void configureMqttClient() {
+    updateWiFiCredentials();
     char willMessage[STATUS_BUFFER_LEN];
     deviceId = getDeviceId();
     _configureWillMessage(deviceId, credentials.room);

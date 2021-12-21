@@ -51,5 +51,9 @@ void initializeEEPROM();
 bool isWiFiCredentialsAvailable();
 void updateWiFiCredentials();
 void saveWiFiCredentials(WiFiCredentials credentials);
+void clearWiFiCredentials();
+
+// ... Reset utils
+void handleReset();
 
 #endif

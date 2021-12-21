@@ -51,7 +51,7 @@ void onConnectionEstablished() {
         if (error) {
             debugMessage(ERROR, "Json parsing failed!");
         } else {
-            setFlowRate((float) command["flow_rate"]);
+            setFlowRate((float)command["flow_rate"]);
         }
     });
 }

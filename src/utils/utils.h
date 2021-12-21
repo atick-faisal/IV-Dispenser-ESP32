@@ -3,10 +3,9 @@
 
 #include <Arduino.h>
 #include <EEPROM.h>
-#include <WiFi.h>
 #include <EspMQTTClient.h>
+#include <WiFi.h>
 
-#include "logger.h"
 #include "../config/config.h"
 #include "../sensor/control.h"
 
@@ -15,11 +14,22 @@ const int SSID_LOCATION = 160;
 const int PASS_LOCATION = 192;
 const int WIFI_CONNECTION_TIMEOUT = 30000;
 
+enum DebugLevel {
+    INFO,
+    SUCCESS,
+    LOADING,
+    ERROR
+};
+
 struct WiFiCredentials {
     String room;
     String ssid;
     String pass;
 };
+
+// ... Logging utils
+void initializeDebugLog();
+void debugMessage(DebugLevel debugLevel, const String message);
 
 // ... WiFi utils
 void initializeWiFi();

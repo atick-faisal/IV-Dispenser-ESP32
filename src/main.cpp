@@ -12,7 +12,6 @@
 
 // ... Global variables
 
-
 void setup() {
     // initializeDebugLog();
     // inialializeBluetooth();

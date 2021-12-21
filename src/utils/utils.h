@@ -9,8 +9,6 @@
 #include "../config/config.h"
 #include "../sensor/control.h"
 
-BluetoothSerial Bluetooth;
-
 const int ROOM_LOCATION = 128;
 const int SSID_LOCATION = 160;
 const int PASS_LOCATION = 192;
@@ -28,6 +26,8 @@ struct WiFiCredentials {
     String ssid;
     String pass;
 };
+
+extern EspMQTTClient client;
 
 // ... Logging utils
 void initializeDebugLog();
@@ -51,8 +51,5 @@ void publishData(
 bool isWiFiCredentialsAvailable();
 WiFiCredentials getWiFiCredentials();
 void saveWiFiCredentials(WiFiCredentials credentials);
-
-// ... Blurtooth utils
-void inialializeBluetooth();
 
 #endif

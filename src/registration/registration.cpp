@@ -1,10 +1,13 @@
 #include "registration.h"
 
-// void inialializeBluetooth() {
-//     debugMessage(LOADING, "Starting bluetooth ... ");
-//     Bluetooth.begin(BLUETOOTH_NAME);
-//     debugMessage(SUCCESS, "Bluetooth initialized ... ");
-// }
+BluetoothSerial Bluetooth;
+EspMQTTClient client;
+
+void inialializeBluetooth() {
+    debugMessage(LOADING, "Starting bluetooth ... ");
+    Bluetooth.begin(BLUETOOTH_NAME);
+    debugMessage(SUCCESS, "Bluetooth initialized ... ");
+}
 
 void _initiateMqtt() {
     debugMessage(LOADING, "Starting MQTT ... ");

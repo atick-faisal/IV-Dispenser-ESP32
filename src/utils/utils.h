@@ -9,6 +9,8 @@
 #include "../config/config.h"
 #include "../sensor/control.h"
 
+BluetoothSerial Bluetooth;
+
 const int ROOM_LOCATION = 128;
 const int SSID_LOCATION = 160;
 const int PASS_LOCATION = 192;
@@ -38,10 +40,19 @@ bool connectToWiFi(const char* ssid, const char* pass);
 // ... MQTT client utils
 String getDeviceId();
 EspMQTTClient getMqttClient();
+void publishData(
+    float flowRate,
+    float dripRate,
+    float urineOut,
+    String alertMessage
+);
 
 // ... EEPROM utils
 bool isWiFiCredentialsAvailable();
 WiFiCredentials getWiFiCredentials();
 void saveWiFiCredentials(WiFiCredentials credentials);
+
+// ... Blurtooth utils
+void inialializeBluetooth();
 
 #endif

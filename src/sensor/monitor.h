@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 
+#include "control.h"
 #include "../utils/utils.h"
 
 #endif

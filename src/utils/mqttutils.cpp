@@ -5,12 +5,11 @@ String getDeviceId() {
 }
 
 void _configureWillMessage(String deviceId, String room) {
-    dispenserStatus.clear();
     dispenserStatus["device_id"] = deviceId;
     dispenserStatus["room_number"] = room;
-    dispenserStatus["drip_rate"] = 0;
-    dispenserStatus["flow_rate"] = 0;
-    dispenserStatus["urine_out"] = 0;
+    dispenserStatus["drip_rate"] = 0.0;
+    dispenserStatus["flow_rate"] = 0.0;
+    dispenserStatus["urine_out"] = 0.0;
     dispenserStatus["alert_message"] = "Device disconnected";
 }
 
@@ -34,12 +33,35 @@ EspMQTTClient getMqttClient() {
 #endif
     // _client.enableHTTPWebUpdater();
     // _client.enableOTA();
+    _client.setKeepAlive(MQTT_KEEP_ALIVE);
     _client.enableLastWillMessage(
         PUBLISH_TOPIC.c_str(),
         willMessage,
         true);
 
     return _client;
+}
+
+void publishData(
+    float flowRate,
+    float dripRate,
+    float urineOut,
+    String alertMessage
+) {
+    debugMessage(LOADING, "Publishing states ... ");
+    WiFiCredentials credentials = getWiFiCredentials();
+    String room = credentials.room;
+    String deviceId = getDeviceId();
+    dispenserStatus["device_id"] = deviceId;
+    dispenserStatus["room_number"] = room;
+    dispenserStatus["drip_rate"] = dripRate;
+    dispenserStatus["flow_rate"] = flowRate;
+    dispenserStatus["urine_out"] = urineOut;
+    dispenserStatus["alert_message"] = "Device disconnected";
+    char statusBuffer[STATUS_BUFFER_LEN];
+    serializeJson(dispenserStatus, statusBuffer);
+    client.publish(PUBLISH_TOPIC, statusBuffer);
+    debugMessage(SUCCESS, "Successfully published ... ");
 }
 
 void onConnectionEstablished() {
@@ -53,5 +75,5 @@ void onConnectionEstablished() {
         } else {
             setFlowRate((float)command["flow_rate"]);
         }
-    });
+    }, MQTT_QOS);
 }

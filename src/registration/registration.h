@@ -7,13 +7,12 @@
 
 #include "../utils/utils.h"
 
-BluetoothSerial Bluetooth;
-StaticJsonDocument<256> registrationRequest;
-StaticJsonDocument<16> registrationResponse;
+extern StaticJsonDocument<256> registrationRequest;
+extern StaticJsonDocument<16> registrationResponse;
 
-bool registrationMode = true;
+extern bool registrationMode;
 
-void inialializeBluetooth();
+// void inialializeBluetooth();
 void handleBluetoothTrafic();
 
 #endif

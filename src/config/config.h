@@ -22,4 +22,6 @@ const uint16_t MQTT_KEEP_ALIVE = 60;
 const short STATUS_BUFFER_LEN = 256;
 const short COMMAND_BUFFER_LEN = 64;
 
+const unsigned long REFRESH_INTERVAL = 10000;
+
 #endif

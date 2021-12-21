@@ -6,4 +6,6 @@
 #include "control.h"
 #include "../utils/utils.h"
 
+void monitorDispenserState();
+
 #endif

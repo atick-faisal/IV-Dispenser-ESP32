@@ -8,6 +8,8 @@
 
 #define DEBUG
 
+#define EEPROM_SIZE 256
+
 const String BLUETOOTH_NAME = "I/V Dispenser";
 
 const String BROKER_IP = "broker.emqx.io";
@@ -22,6 +24,7 @@ const uint16_t MQTT_KEEP_ALIVE = 60;
 const short STATUS_BUFFER_LEN = 256;
 const short COMMAND_BUFFER_LEN = 64;
 
+const int WIFI_CONNECTION_TIMEOUT = 10000;
 const unsigned long REFRESH_INTERVAL = 10000;
 
 #endif

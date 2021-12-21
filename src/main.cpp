@@ -1,17 +1,19 @@
 #include <Arduino.h>
 
 #include "registration/registration.h"
-#include "utils/utils.h"
 #include "sensor/monitor.h"
+#include "utils/utils.h"
 
 // ... Global variables
 extern EspMQTTClient client;
 extern bool registrationMode;
+extern bool mqttConnected;
 
 unsigned long looper = millis();
 
 void setup() {
     initializeDebugLog();
+    initializeEEPROM();
     inialializeBluetooth();
     initializeWiFi();
     registrationMode = !isWiFiCredentialsAvailable();
@@ -24,10 +26,12 @@ void loop() {
     if (registrationMode) {
         handleBluetoothTrafic();
     } else {
-        if (millis() > looper + REFRESH_INTERVAL) {
-            looper = millis();
-            monitorDispenserState();
-        }
         client.loop();
+        if (mqttConnected) {
+            if (millis() > looper + REFRESH_INTERVAL) {
+                looper = millis();
+                monitorDispenserState();
+            }
+        }
     }
 }

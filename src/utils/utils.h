@@ -9,10 +9,9 @@
 #include "../config/config.h"
 #include "../sensor/control.h"
 
-const int ROOM_LOCATION = 128;
-const int SSID_LOCATION = 160;
-const int PASS_LOCATION = 192;
-const int WIFI_CONNECTION_TIMEOUT = 30000;
+const int ROOM_LOCATION = 0;
+const int SSID_LOCATION = 64;
+const int PASS_LOCATION = 128;
 
 enum DebugLevel {
     INFO,
@@ -48,8 +47,9 @@ void publishData(
 );
 
 // ... EEPROM utils
+void initializeEEPROM();
 bool isWiFiCredentialsAvailable();
-WiFiCredentials getWiFiCredentials();
+void updateWiFiCredentials();
 void saveWiFiCredentials(WiFiCredentials credentials);
 
 #endif

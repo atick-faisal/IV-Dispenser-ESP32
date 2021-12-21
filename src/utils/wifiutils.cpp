@@ -9,6 +9,7 @@ bool connectToWiFi(const char* ssid, const char* pass) {
     WiFi.begin(ssid, pass);
     unsigned long start = millis();
     while (WiFi.status() != WL_CONNECTED) {
+        delay(100);
         if (millis() > (start + WIFI_CONNECTION_TIMEOUT)) {
             debugMessage(ERROR, "Failed to connect to WiFi!");
             return false;

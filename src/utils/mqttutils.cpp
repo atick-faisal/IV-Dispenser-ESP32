@@ -3,8 +3,13 @@
 StaticJsonDocument<STATUS_BUFFER_LEN> dispenserStatus;
 StaticJsonDocument<COMMAND_BUFFER_LEN> command;
 
+bool mqttConnected = false;
+String deviceId;
+
+extern WiFiCredentials credentials;
+
 String getDeviceId() {
-    return "IVD_" + WiFi.macAddress();
+    return "2332"; // + WiFi.macAddress();
 }
 
 void _configureWillMessage(String deviceId, String room) {
@@ -18,8 +23,7 @@ void _configureWillMessage(String deviceId, String room) {
 
 EspMQTTClient getMqttClient() {
     char willMessage[STATUS_BUFFER_LEN];
-    String deviceId = getDeviceId();
-    WiFiCredentials credentials = getWiFiCredentials();
+    deviceId = getDeviceId();
     _configureWillMessage(deviceId, credentials.room);
     serializeJson(dispenserStatus, willMessage);
     EspMQTTClient _client = EspMQTTClient(
@@ -52,11 +56,11 @@ void publishData(
     String alertMessage
 ) {
     debugMessage(LOADING, "Publishing states ... ");
-    WiFiCredentials credentials = getWiFiCredentials();
-    String room = credentials.room;
-    String deviceId = getDeviceId();
+    // WiFiCredentials credentials = getWiFiCredentials();
+    // String room = credentials.room;
+    // String deviceId = getDeviceId();
     dispenserStatus["device_id"] = deviceId;
-    dispenserStatus["room_number"] = room;
+    dispenserStatus["room_number"] = credentials.room;
     dispenserStatus["drip_rate"] = dripRate;
     dispenserStatus["flow_rate"] = flowRate;
     dispenserStatus["urine_out"] = urineOut;
@@ -69,6 +73,7 @@ void publishData(
 
 void onConnectionEstablished() {
     debugMessage(SUCCESS, "MQTT connected ... ");
+    mqttConnected = true;
     String subscribeTopic = SUBSCRIBE_TOPIC + getDeviceId();
     client.subscribe(subscribeTopic.c_str(), [](const String& payload) {
         debugMessage(INFO, payload);

@@ -4,7 +4,7 @@ BluetoothSerial Bluetooth;
 EspMQTTClient client;
 
 StaticJsonDocument<256> registrationRequest;
-StaticJsonDocument<16> registrationResponse;
+StaticJsonDocument<24> registrationResponse;
 
 bool registrationMode = true;
 
@@ -22,16 +22,18 @@ void _initiateMqtt() {
 
 void _sendRegistrationResponse(bool status) {
     debugMessage(LOADING, "Sending registration response ... ");
+    char buffer[24];
     registrationResponse["success"] = status;
-    serializeJson(registrationResponse, Bluetooth);
+    serializeJson(registrationResponse, buffer);
+    Bluetooth.println(buffer);
     debugMessage(SUCCESS, "Response sent ... ");
 }
 
 void _registerDevice() {
     debugMessage(LOADING, "Registering device ... ");
-    String room = registrationRequest["room"];
-    String ssid = registrationRequest["ssid"];
-    String pass = registrationRequest["pass"];
+    String room = registrationRequest["room_number"];
+    String ssid = registrationRequest["wifi_name"];
+    String pass = registrationRequest["wifi_password"];
     if(connectToWiFi(ssid.c_str(), pass.c_str())) {
         debugMessage(SUCCESS, "Registration successful ... ");
         _sendRegistrationResponse(true);

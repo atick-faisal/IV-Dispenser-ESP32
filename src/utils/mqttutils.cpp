@@ -1,5 +1,8 @@
 #include "utils.h"
 
+StaticJsonDocument<STATUS_BUFFER_LEN> dispenserStatus;
+StaticJsonDocument<COMMAND_BUFFER_LEN> command;
+
 String getDeviceId() {
     return "IVD_" + WiFi.macAddress();
 }

@@ -4,6 +4,7 @@
 
 // ... Global variables
 extern EspMQTTClient client;
+extern bool registrationMode;
 
 void setup() {
     initializeDebugLog();

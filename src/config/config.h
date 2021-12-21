@@ -22,9 +22,4 @@ const uint16_t MQTT_KEEP_ALIVE = 60;
 const short STATUS_BUFFER_LEN = 256;
 const short COMMAND_BUFFER_LEN = 64;
 
-// ... Global variables
-// extern EspMQTTClient client;
-extern StaticJsonDocument<STATUS_BUFFER_LEN> dispenserStatus;
-extern StaticJsonDocument<COMMAND_BUFFER_LEN> command;
-
 #endif

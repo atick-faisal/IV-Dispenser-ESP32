@@ -53,15 +53,12 @@ void publishData(
     String alertMessage) {
     debugMessage(LOADING, "Publishing states ... ");
     String topic = PUBLISH_TOPIC + deviceId;
-    // WiFiCredentials credentials = getWiFiCredentials();
-    // String room = credentials.room;
-    // String deviceId = getDeviceId();
     dispenserStatus["device_id"] = deviceId;
     dispenserStatus["room"] = credentials.room;
     dispenserStatus["drip_rate"] = dripRate;
     dispenserStatus["flow_rate"] = flowRate;
     dispenserStatus["urine_out"] = urineOut;
-    dispenserStatus["alert_message"] = "";
+    dispenserStatus["alert_message"] = alertMessage;
     char statusBuffer[STATUS_BUFFER_LEN];
     serializeJson(dispenserStatus, statusBuffer);
     client.publish(topic, statusBuffer);

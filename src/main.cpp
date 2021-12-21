@@ -18,7 +18,7 @@ void setup() {
     initializeWiFi();
     registrationMode = !isWiFiCredentialsAvailable();
     if (!registrationMode) {
-        client = getMqttClient();
+        configureMqttClient();
     }
 }
 
@@ -27,12 +27,12 @@ void loop() {
         handleBluetoothTrafic();
     } else {
         client.loop();
-        // if (mqttConnected) {
-        //     if (millis() > looper + REFRESH_INTERVAL) {
-        //         looper = millis();
-        //         monitorDispenserState();
-        //     }
-        // }
+        if (mqttConnected) {
+            if (millis() > looper + REFRESH_INTERVAL) {
+                looper = millis();
+                monitorDispenserState();
+            }
+        }
     }
-    
 }
+

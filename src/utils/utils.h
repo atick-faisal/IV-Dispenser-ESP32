@@ -38,7 +38,7 @@ bool connectToWiFi(const char* ssid, const char* pass);
 
 // ... MQTT client utils
 String getDeviceId();
-EspMQTTClient getMqttClient();
+void configureMqttClient();
 void publishData(
     float flowRate,
     float dripRate,

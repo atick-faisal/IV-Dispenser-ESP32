@@ -16,7 +16,7 @@ void inialializeBluetooth() {
 
 void _initiateMqtt() {
     debugMessage(LOADING, "Starting MQTT ... ");
-    client = getMqttClient();
+    configureMqttClient();
     registrationMode = false;
 }
 

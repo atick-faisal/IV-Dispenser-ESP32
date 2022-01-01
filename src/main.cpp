@@ -12,7 +12,7 @@ extern bool mqttConnected;
 unsigned long looper = millis();
 
 void setup() {
-    pinMode(RESET_PIN, INPUT_PULLDOWN);
+    pinMode(RESET_PIN, INPUT);
     initializeDebugLog();
     initializeEEPROM();
     inialializeBluetooth();

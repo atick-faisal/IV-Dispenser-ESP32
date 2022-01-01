@@ -4,10 +4,10 @@ extern bool registrationMode;
 extern bool mqttConnected;
 
 void handleReset() {
-    if (digitalRead(RESET_PIN) == HIGH) {
+    if (digitalRead(RESET_PIN) == LOW) {
         unsigned long start = millis();
         debugMessage(LOADING, "Hold on to reset the device in 5 secs ... ");
-        while (digitalRead(RESET_PIN) == HIGH) {
+        while (digitalRead(RESET_PIN) == LOW) {
             if (millis() > start + RESET_TIMEOUT) {
                 clearWiFiCredentials();
                 registrationMode = true;

@@ -17,7 +17,7 @@ void handleReset() {
                 ESP.restart();
                 return;
             }
-            delay(100); // ... for debouncing
+            delay(100);  // ... for debouncing
         }
         debugMessage(ERROR, "Reset failed!");
     }

@@ -34,7 +34,7 @@ void _registerDevice() {
     String room = registrationRequest["room_number"];
     String ssid = registrationRequest["wifi_name"];
     String pass = registrationRequest["wifi_password"];
-    if(connectToWiFi(ssid.c_str(), pass.c_str())) {
+    if (connectToWiFi(ssid.c_str(), pass.c_str())) {
         debugMessage(SUCCESS, "Registration successful ... ");
         _sendRegistrationResponse(true);
         WiFiCredentials credentials;
@@ -43,10 +43,10 @@ void _registerDevice() {
         credentials.pass = pass;
         saveWiFiCredentials(credentials);
 
-         // ... stop bluetooth
+        // ... stop bluetooth
         delay(PAUSE_AFTER_REGISTRATION);
         btStop();
-        
+
         _initiateMqtt();
     } else {
         debugMessage(ERROR, "Registration failed!");
@@ -62,9 +62,8 @@ void handleBluetoothTrafic() {
             incomingData += (char)Bluetooth.read();
         }
         debugMessage(SUCCESS, incomingData);
-        DeserializationError error = deserializeJson(
-            registrationRequest,
-            incomingData);
+        DeserializationError error =
+            deserializeJson(registrationRequest, incomingData);
         if (error) {
             debugMessage(ERROR, "Error parsing json ... ");
         } else {

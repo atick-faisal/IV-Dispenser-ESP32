@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-#include "control.h"
 #include "../utils/utils.h"
+#include "control.h"
 
 void monitorDispenserState();
 

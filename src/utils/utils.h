@@ -13,12 +13,7 @@ const int ROOM_LOCATION = 0;
 const int SSID_LOCATION = 64;
 const int PASS_LOCATION = 128;
 
-enum DebugLevel {
-    INFO,
-    SUCCESS,
-    LOADING,
-    ERROR
-};
+enum DebugLevel { INFO, SUCCESS, LOADING, ERROR };
 
 struct WiFiCredentials {
     String room;
@@ -39,12 +34,8 @@ bool connectToWiFi(const char* ssid, const char* pass);
 // ... MQTT client utils
 String getDeviceId();
 void configureMqttClient();
-void publishData(
-    float flowRate,
-    float dripRate,
-    float urineOut,
-    String alertMessage
-);
+void publishData(float flowRate, float dripRate, float urineOut,
+                 String alertMessage);
 
 // ... EEPROM utils
 void initializeEEPROM();

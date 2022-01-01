@@ -9,9 +9,7 @@ String deviceId;
 extern WiFiCredentials credentials;
 extern EspMQTTClient client;
 
-String getDeviceId() {
-    return "IVD_" + WiFi.macAddress();
-}
+String getDeviceId() { return "IVD_" + WiFi.macAddress(); }
 
 void _configureWillMessage(String deviceId, String room) {
     dispenserStatus["device_id"] = deviceId;
@@ -28,10 +26,10 @@ void configureMqttClient() {
     deviceId = getDeviceId();
     _configureWillMessage(deviceId, credentials.room);
     serializeJson(dispenserStatus, willMessage);
-    client.setWifiCredentials(
-        credentials.ssid.c_str(),
-        credentials.pass.c_str());
-    client.setMqttServer(BROKER_IP.c_str());
+    client.setWifiCredentials(credentials.ssid.c_str(),
+                              credentials.pass.c_str());
+    client.setMqttServer(BROKER_IP.c_str(), BROKER_USER.c_str(),
+                         BROKER_PASS.c_str(), PORT);
     client.setMqttClientName(deviceId.c_str());
 
 #ifdef DEBUG
@@ -40,17 +38,11 @@ void configureMqttClient() {
     // client.enableHTTPWebUpdater();
     // client.enableOTA();
     client.setKeepAlive(MQTT_KEEP_ALIVE);
-    client.enableLastWillMessage(
-        PUBLISH_TOPIC.c_str(),
-        willMessage,
-        true);
+    client.enableLastWillMessage(PUBLISH_TOPIC.c_str(), willMessage, true);
 }
 
-void publishData(
-    float flowRate,
-    float dripRate,
-    float urineOut,
-    String alertMessage) {
+void publishData(float flowRate, float dripRate, float urineOut,
+                 String alertMessage) {
     debugMessage(LOADING, "Publishing states ... ");
     String topic = PUBLISH_TOPIC + deviceId;
     dispenserStatus["device_id"] = deviceId;
@@ -61,7 +53,7 @@ void publishData(
     dispenserStatus["alert_message"] = alertMessage;
     char statusBuffer[STATUS_BUFFER_LEN];
     serializeJson(dispenserStatus, statusBuffer);
-    client.publish(topic, statusBuffer);
+    client.publish(topic, statusBuffer, true);
     debugMessage(SUCCESS, "Successfully published ... ");
 }
 
@@ -70,7 +62,8 @@ void onConnectionEstablished() {
     mqttConnected = true;
     String subscribeTopic = SUBSCRIBE_TOPIC + getDeviceId();
     client.subscribe(
-        subscribeTopic.c_str(), [](const String& payload) {
+        subscribeTopic.c_str(),
+        [](const String& payload) {
             debugMessage(INFO, payload);
             DeserializationError error = deserializeJson(command, payload);
             if (error) {

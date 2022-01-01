@@ -6,7 +6,7 @@
 #include <BluetoothSerial.h>
 #include <EspMQTTClient.h>
 
-#define DEBUG // ... comment this in production build
+#define DEBUG  // ... comment this in production build
 
 #define RESET_PIN 34
 #define EEPROM_SIZE 256
@@ -28,6 +28,8 @@ const short COMMAND_BUFFER_LEN = 64;
 const int RESET_TIMEOUT = 5000;
 const int WIFI_CONNECTION_TIMEOUT = 30000;
 const unsigned long REFRESH_INTERVAL = 10000;
-const int PAUSE_AFTER_REGISTRATION = 3000; // ... required for sending registration confirmation
+
+// ... required for sending registration confirmation
+const int PAUSE_AFTER_REGISTRATION = 3000;
 
 #endif

@@ -11,34 +11,25 @@ extern EspMQTTClient client;
 
 String getDeviceId() { return "IVD_" + WiFi.macAddress(); }
 
-void _configureWillMessage(String deviceId, String room) {
-    dispenserStatus["device_id"] = deviceId;
-    dispenserStatus["room"] = room;
-    dispenserStatus["drip_rate"] = 0.0;
-    dispenserStatus["flow_rate"] = 0.0;
-    dispenserStatus["urine_out"] = 0.0;
-    dispenserStatus["alert_message"] = "Device disconnected";
-}
-
 void configureMqttClient() {
     updateWiFiCredentials();
-    char willMessage[STATUS_BUFFER_LEN];
     deviceId = getDeviceId();
-    _configureWillMessage(deviceId, credentials.room);
-    serializeJson(dispenserStatus, willMessage);
+
     client.setWifiCredentials(credentials.ssid.c_str(),
                               credentials.pass.c_str());
     client.setMqttServer(BROKER_IP.c_str(), BROKER_USER.c_str(),
                          BROKER_PASS.c_str(), PORT);
     client.setMqttClientName(deviceId.c_str());
+    client.setKeepAlive(MQTT_KEEP_ALIVE);
+    client.enableLastWillMessage(PUBLISH_TOPIC.c_str(), WILL_MESSAGE.c_str(),
+                                 true);
 
 #ifdef DEBUG
     client.enableDebuggingMessages();
 #endif
+    // client.enableMQTTPersistence();
     // client.enableHTTPWebUpdater();
     // client.enableOTA();
-    client.setKeepAlive(MQTT_KEEP_ALIVE);
-    client.enableLastWillMessage(PUBLISH_TOPIC.c_str(), willMessage, true);
 }
 
 void publishData(float flowRate, float dripRate, float urineOut,
@@ -60,7 +51,7 @@ void publishData(float flowRate, float dripRate, float urineOut,
 void onConnectionEstablished() {
     debugMessage(SUCCESS, "MQTT connected ... ");
     mqttConnected = true;
-    String subscribeTopic = SUBSCRIBE_TOPIC + getDeviceId();
+    String subscribeTopic = SUBSCRIBE_TOPIC + deviceId;
     client.subscribe(
         subscribeTopic.c_str(),
         [](const String& payload) {

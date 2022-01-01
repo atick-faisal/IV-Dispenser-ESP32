@@ -5,6 +5,7 @@ StaticJsonDocument<COMMAND_BUFFER_LEN> command;
 
 bool mqttConnected = false;
 String deviceId;
+char willMessage[STATUS_BUFFER_LEN];
 
 extern WiFiCredentials credentials;
 extern EspMQTTClient client;
@@ -15,14 +16,23 @@ void configureMqttClient() {
     updateWiFiCredentials();
     deviceId = getDeviceId();
 
+    dispenserStatus["device_id"] = deviceId;
+    dispenserStatus["room"] = credentials.room;
+    dispenserStatus["drip_rate"] = 0.0F;
+    dispenserStatus["flow_rate"] = 0.0F;
+    dispenserStatus["urine_out"] = 0.0F;
+    dispenserStatus["alert_message"] = "Device Disconnected";
+
+    serializeJson(dispenserStatus, willMessage);
+
     client.setWifiCredentials(credentials.ssid.c_str(),
                               credentials.pass.c_str());
     client.setMqttServer(BROKER_IP.c_str(), BROKER_USER.c_str(),
                          BROKER_PASS.c_str(), PORT);
     client.setMqttClientName(deviceId.c_str());
     client.setKeepAlive(MQTT_KEEP_ALIVE);
-    client.enableLastWillMessage(PUBLISH_TOPIC.c_str(), WILL_MESSAGE.c_str(),
-                                 true);
+    client.enableLastWillMessage(PUBLISH_TOPIC.c_str(),
+                                 (const char*)willMessage, true);
 
 #ifdef DEBUG
     client.enableDebuggingMessages();

@@ -27,11 +27,11 @@ void configureMqttClient() {
 
     client.setWifiCredentials(credentials.ssid.c_str(),
                               credentials.pass.c_str());
-    client.setMqttServer(BROKER_IP.c_str(), BROKER_USER.c_str(),
-                         BROKER_PASS.c_str(), PORT);
+    client.setMqttServer(BROKER_IP, BROKER_USER,
+                         BROKER_PASS, PORT);
     client.setMqttClientName(deviceId.c_str());
     client.setKeepAlive(MQTT_KEEP_ALIVE);
-    client.enableLastWillMessage(PUBLISH_TOPIC.c_str(),
+    client.enableLastWillMessage(PUBLISH_TOPIC,
                                  (const char*)willMessage, true);
 
 #ifdef DEBUG

@@ -68,7 +68,7 @@ void onConnectionEstablished() {
             debugMessage(INFO, payload);
             DeserializationError error = deserializeJson(command, payload);
             if (error) {
-                debugMessage(ERROR, "Json parsing failed!");
+                debugMessage(ERROR, error.c_str());
             } else {
                 setFlowRate((float)command["flow_rate"]);
             }

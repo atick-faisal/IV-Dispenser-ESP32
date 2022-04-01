@@ -14,7 +14,7 @@
 static const char BLUETOOTH_NAME[] = "I/V Dispenser";
 
 // static const char BROKER_IP = "broker.emqx.io";
-static const char BROKER_IP[] = "192.168.0.117";
+static const char BROKER_IP[] = "192.168.0.102";
 static const char BROKER_USER[] = "admin";
 static const char BROKER_PASS[] = "admin";
 static const char PUBLISH_TOPIC[] = "dev.atick.mqtt/status/";
@@ -25,7 +25,7 @@ const uint16_t MQTT_KEEP_ALIVE = 15;
 static const char WILL_MESSAGE[] = "{\"alert_message\":\"Device Disconnected\"}";
 
 const short STATUS_BUFFER_LEN = 256;
-const short COMMAND_BUFFER_LEN = 64;
+const short COMMAND_BUFFER_LEN = 128;
 
 const int RESET_TIMEOUT = 5000;
 const int WIFI_CONNECTION_TIMEOUT = 30000;

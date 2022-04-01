@@ -21,7 +21,8 @@ void configureMqttClient() {
     dispenserStatus["drip_rate"] = 0.0F;
     dispenserStatus["flow_rate"] = 0.0F;
     dispenserStatus["urine_out"] = 0.0F;
-    dispenserStatus["alert_message"] = "Device Disconnected";
+    dispenserStatus["alert_message"] =
+        "Device disconnected at room " + credentials.room;
 
     serializeJson(dispenserStatus, willMessage);
 

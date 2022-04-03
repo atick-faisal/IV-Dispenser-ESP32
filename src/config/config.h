@@ -41,4 +41,12 @@ const int PAUSE_AFTER_REGISTRATION = 3000;
 #define ADAPTIVE_TH_ALPHA 0.3
 #define N_DRIP 5
 
+// ... Stepper
+#define BUTTON_CCW 26
+#define BUTTON_CW 25
+#define DIR_PIN 32
+#define STEP_PIN 33
+#define TOTAL_STEPS 200
+#define MOVE_STEPS 1
+
 #endif

@@ -1,5 +1,41 @@
 #include "control.h"
 
+int16_t position = 0;
+
+void rotateCCW(uint16_t steps) {
+    position += steps;
+    digitalWrite(DIR_PIN, LOW);
+    for (uint16_t x = 0; x < steps; x++) {
+        digitalWrite(STEP_PIN, HIGH);
+        delay(2);
+        digitalWrite(STEP_PIN, LOW);
+        delay(2);
+    }
+}
+
+void rotateCW(uint16_t steps) {
+    position -= steps;
+    digitalWrite(DIR_PIN, HIGH);
+    for (uint16_t x = 0; x < steps; x++) {
+        digitalWrite(STEP_PIN, HIGH);
+        delay(2);
+        digitalWrite(STEP_PIN, LOW);
+        delay(2);
+    }
+}
+
 void setFlowRate(float flowRate) {
-    // ... TODO: Implement this
+    uint16_t moveStep = (uint16_t)(flowRate * 1400);
+
+    if (position < moveStep) {
+        while (position < moveStep) {
+            rotateCCW(1);
+        }
+    } else if (position > moveStep) {
+        while (position > moveStep) {
+            rotateCW(1);
+        }
+    }
+
+    debugMessage(INFO, String(moveStep) + "," + String(flowRate));
 }

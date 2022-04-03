@@ -45,13 +45,13 @@ void monitorDispenserState() {
         oldMovingAvg = movingAvg;
     }
 
-    debugMessage(INFO, "[ " + String(currentVal) + " ]" +
-                           " Threshold: " + String(adaptiveThreshold) +
-                           " Drip Count: " + String(dripCount) +
-                           " Drip Rate: " + String(dripRate) +
-                           " Flow Rate: " + String(flowRate));
+    // debugMessage(INFO, "[ " + String(currentVal) + " ]" +
+    //                        " Threshold: " + String(adaptiveThreshold) +
+    //                        " Drip Count: " + String(dripCount) +
+    //                        " Drip Rate: " + String(dripRate) +
+    //                        " Flow Rate: " + String(flowRate));
 
-    setFlowRate(flowRate);
+    // setFlowRate(flowRate);
 }
 
 void sendDispenserState() {

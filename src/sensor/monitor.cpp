@@ -1,80 +1,63 @@
 #include "monitor.h"
 
-#define SENSE_PIN 34
-#define THRESHOLD 3000
-#define N_DRIP 5
+bool dripFlag = false;
+uint8_t dripCount = 0;
+uint16_t elapsedTime = 0;
+float currentVal = 0.0;
+unsigned long initTime = millis();
 
-uint16_t current_val = 0;
-unsigned long t_init = millis();
-bool drip_flag = false;
-uint8_t drip_count = 0;
-uint16_t duration_buffer = 0;
-float drip_rate = 0;
-float flow_rate = 0;
-
-// float flowRate = (float)random(0, 100);
-// float drip_rate = (float)random(20, 120);
+float flowRate = (float)random(0, 100);
+float dripRate = (float)random(20, 120);
 float urineOut = (float)random(0, 1000);
 
 String alertMessage = "";
 
-// void setup() {
-//   Serial.begin(9600);
-
-//   t_init = millis();
-// }
-
-// void loop() {
-//   current_val = analogRead(SENSE_PIN);
-
-//   if((current_val < THRESHOLD) && (drip_flag == false)) {
-//     duration_buffer += millis() - t_init;
-//     drip_flag = true;
-//     t_init = millis();
-//     drip_count++;
-//   }
-//   else if ((current_val > THRESHOLD) && (drip_flag == true) && ((millis() - t_init) > 100)) {
-//     drip_flag = false;
-//     if (drip_count == N_DRIP) {
-//       drip_count = 0;
-//       drip_rate = N_DRIP * 60000 / (float)duration_buffer;
-//       duration_buffer = 0;
-
-//     }
-//   }
-
-//   Serial.print(current_val);
-//   Serial.print(",");
-//   Serial.print(drip_count);
-//   Serial.print(",");
-//   Serial.print(drip_rate);
-//   Serial.print("\n");
-// }
+float adaptiveThreshold = 0.0;
+float movingAvg = 0.0;
+float oldMovingAvg = 0.0;
 
 void monitorDispenserState() {
-    current_val = analogRead(SENSE_PIN);
+    currentVal = (float)pow(
+        (float)analogRead(SENSE_PIN) / 4096.0, 2);
 
-    if ((current_val < THRESHOLD) && (drip_flag == false)) {
-        duration_buffer += millis() - t_init;
-        drip_flag = true;
-        t_init = millis();
-        drip_count++;
-    } else if ((current_val > THRESHOLD) && (drip_flag == true) && ((millis() - t_init) > 100)) {
-        drip_flag = false;
-        if (drip_count == N_DRIP) {
-            drip_count = 0;
-            drip_rate = N_DRIP * 60000 / (float)duration_buffer;
-            flow_rate = drip_rate * 3;
-            duration_buffer = 0;
+    if (currentVal < DRIPPING_THRESHOLD && !dripFlag) {
+        elapsedTime += millis() - initTime;
+        initTime = millis();
+        dripFlag = true;
+        dripCount++;
+
+    } else if (currentVal > DRIPPING_THRESHOLD && dripFlag) {
+        if ((millis() - initTime) > DRIP_WIDTH_TOLERANCE) {
+            dripFlag = false;
+            if (dripCount == N_DRIP) {
+                dripRate = N_DRIP * 60000.0 / (float)elapsedTime;
+                flowRate = dripRate * 3;
+                elapsedTime = 0;
+                dripCount = 0;
+            }
         }
     }
 
-    debugMessage(INFO, "Drip Rate: " + String(drip_rate) +
-                           " Flow Rate: " + String(flow_rate));
+    if (currentVal > DRIPPING_THRESHOLD) {
+        movingAvg = ADAPTIVE_TH_ALPHA * currentVal +
+                    (1 - ADAPTIVE_TH_ALPHA) * oldMovingAvg;
+        adaptiveThreshold = movingAvg - 0.03;
+        oldMovingAvg = movingAvg;
+    }
 
-    setFlowRate(flow_rate);
+    debugMessage(INFO, "[ " + String(currentVal) + " ]" +
+                           " Threshold: " + String(adaptiveThreshold) +
+                           " Drip Count: " + String(dripCount) +
+                           " Drip Rate: " + String(dripRate) +
+                           " Flow Rate: " + String(flowRate));
+
+    setFlowRate(flowRate);
 }
 
 void sendDispenserState() {
-    publishData(flow_rate, drip_rate, urineOut, alertMessage);
+    publishData(
+        flowRate,
+        dripRate,
+        urineOut,
+        alertMessage);
 }

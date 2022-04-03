@@ -34,4 +34,11 @@ const unsigned long REFRESH_INTERVAL = 10000;
 // ... required for sending registration confirmation
 const int PAUSE_AFTER_REGISTRATION = 3000;
 
+// ... Sensors
+#define SENSE_PIN 34
+#define DRIPPING_THRESHOLD 0.22
+#define DRIP_WIDTH_TOLERANCE 700
+#define ADAPTIVE_TH_ALPHA 0.3
+#define N_DRIP 5
+
 #endif

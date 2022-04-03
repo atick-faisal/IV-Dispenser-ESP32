@@ -33,9 +33,10 @@ void loop() {
         if (mqttConnected) {
             if (millis() > looper + REFRESH_INTERVAL) {
                 looper = millis();
-                monitorDispenserState();
+                sendDispenserState();
             }
         }
         handleReset();
+        monitorDispenserState();
     }
 }

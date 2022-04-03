@@ -7,5 +7,6 @@
 #include "control.h"
 
 void monitorDispenserState();
+void sendDispenserState();
 
 #endif

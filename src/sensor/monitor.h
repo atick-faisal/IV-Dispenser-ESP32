@@ -5,8 +5,11 @@
 
 #include "../utils/utils.h"
 #include "control.h"
+#include <HX711.h>
+#include <RunningMedian.h>
 
 void monitorDispenserState();
+void monitorUrineOutput();
 void sendDispenserState();
 
 #endif

@@ -41,6 +41,11 @@ const int PAUSE_AFTER_REGISTRATION = 3000;
 #define ADAPTIVE_TH_ALPHA 0.3
 #define N_DRIP 5
 
+// ... Load Cell
+#define CALIBRATION_FACTOR 388.59
+#define SCALE_DOUT 4
+#define SCALE_SCK 2
+
 // ... Stepper
 #define BUTTON_CCW 26
 #define BUTTON_CW 25

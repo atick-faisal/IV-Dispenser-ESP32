@@ -1,10 +1,17 @@
 #include "monitor.h"
 
+// ... Drip Detector
 bool dripFlag = false;
 uint8_t dripCount = 0;
 uint16_t elapsedTime = 0;
 float currentVal = 0.0;
 unsigned long initTime = millis();
+
+// ... Load Cell
+float scale_val = 0;
+
+HX711 scale;
+RunningMedian samples = RunningMedian(20);
 
 float flowRate = (float)random(0, 100);
 float dripRate = (float)random(20, 120);
@@ -52,6 +59,12 @@ void monitorDispenserState() {
     //                        " Flow Rate: " + String(flowRate));
 
     // setFlowRate(flowRate);
+}
+
+void monitorUrineOutput() {
+    samples.add(scale.get_units());
+    urineOut = samples.getAverage();
+    debugMessage(INFO, "Urine Output: " + String(urineOut));
 }
 
 void sendDispenserState() {

@@ -6,5 +6,6 @@
 #include "../utils/utils.h"
 
 void setFlowRate(float flowRate);
+void handleStepperButton();
 
 #endif

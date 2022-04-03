@@ -13,6 +13,8 @@ unsigned long looper = millis();
 
 void setup() {
     pinMode(RESET_PIN, INPUT);
+    pinMode(STEP_PIN, OUTPUT);
+    pinMode(DIR_PIN, OUTPUT);
     initializeDebugLog();
     initializeEEPROM();
     inialializeBluetooth();

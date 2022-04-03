@@ -37,5 +37,5 @@ void setFlowRate(float flowRate) {
         }
     }
 
-    debugMessage(INFO, String(moveStep) + "," + String(flowRate));
+    debugMessage(INFO, String(position) + "," + String(moveStep) + "," + String(flowRate));
 }

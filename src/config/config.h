@@ -36,10 +36,9 @@ const int PAUSE_AFTER_REGISTRATION = 3000;
 
 // ... Sensors
 #define SENSE_PIN 34
-#define DRIPPING_THRESHOLD 0.22
-#define DRIP_WIDTH_TOLERANCE 700
-#define ADAPTIVE_TH_ALPHA 0.3
-#define N_DRIP 5
+#define DRIP_WIDTH_TOLERANCE 300
+#define ADAPTIVE_TH_ALPHA 0.1
+#define N_DRIP 10
 
 // ... Load Cell
 #define CALIBRATION_FACTOR 388.59

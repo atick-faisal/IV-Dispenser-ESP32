@@ -9,7 +9,9 @@
 extern EspMQTTClient client;
 extern bool registrationMode;
 extern bool mqttConnected;
-
+extern float currentVal;
+extern float drippingThreshold;
+extern float thresholdBuffer;
 extern HX711 scale;
 // extern RunningMedian samples = RunningMedian(20);
 
@@ -36,6 +38,13 @@ void setup() {
     } else {
         debugMessage(INFO, "Starting registration process ... ");
     }
+
+    for (uint8_t i = 0; i < 50; i++)
+    {
+        currentVal = (float)analogRead(SENSE_PIN) / 4096.0;
+        thresholdBuffer += currentVal * currentVal;
+    }
+    drippingThreshold = (thresholdBuffer / 50.0) - 0.02;
 }
 
 void loop() {

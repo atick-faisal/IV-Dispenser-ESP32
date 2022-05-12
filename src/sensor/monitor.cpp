@@ -12,9 +12,12 @@ unsigned long initTime = millis();
 // ... Load Cell
 float scale_val = 0;
 
+extern int16_t position;
+
 HX711 scale;
 RunningMedian weightSamples = RunningMedian(20);
 RunningMedian dripSamples = RunningMedian(N_DRIP);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 float flowRate = (float)random(0, 100);
 float dripRate = (float)random(20, 120);
@@ -59,6 +62,16 @@ void monitorDispenserState() {
                           " Drip Rate: " + String(dripRate) +
                           " Flow Rate: " + String(flowRate));
 
+    lcdClearVal();
+    lcd.setCursor(3, 0);
+    lcd.print(dripRate, 1);
+    lcd.setCursor(11, 0);
+    lcd.print(dripCount);
+    lcd.setCursor(3, 1);
+    lcd.print((uint16_t)abs(urineOut));
+    lcd.setCursor(11, 1);
+    lcd.print(position);
+
     // setFlowRate(flowRate);
 }
 
@@ -74,4 +87,36 @@ void sendDispenserState() {
         dripRate,
         urineOut,
         alertMessage);
+}
+
+void lcdTemplate()
+{
+    lcd.setCursor(3, 0);
+    lcd.print("AUTOMATIC");
+    lcd.setCursor(1, 1);
+    lcd.print("I/V DISPENSER");
+    delay(2000);
+    lcd.clear();
+    delay(200);
+
+    lcd.setCursor(0, 0);
+    lcd.print("DR:");
+    lcd.setCursor(8, 0);
+    lcd.print("DC:");
+    lcd.setCursor(0, 1);
+    lcd.print("UO:");
+    lcd.setCursor(8, 1);
+    lcd.print("MP:");
+}
+
+void lcdClearVal()
+{
+    lcd.setCursor(3, 0);
+    lcd.print("     ");
+    lcd.setCursor(11, 0);
+    lcd.print("     ");
+    lcd.setCursor(3, 1);
+    lcd.print("     ");
+    lcd.setCursor(11, 1);
+    lcd.print("     ");
 }

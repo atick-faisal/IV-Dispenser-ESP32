@@ -13,7 +13,7 @@ extern float currentVal;
 extern float drippingThreshold;
 extern float thresholdBuffer;
 extern HX711 scale;
-// extern RunningMedian samples = RunningMedian(20);
+extern LiquidCrystal_I2C lcd;
 
 unsigned long looper = millis();
 
@@ -27,6 +27,12 @@ void setup() {
     scale.begin(SCALE_DOUT, SCALE_SCK);
     scale.set_scale(CALIBRATION_FACTOR);
     scale.tare();
+
+    lcd.init();
+    lcd.backlight();
+    lcd.clear();
+    delay(200);
+    lcdTemplate();
 
     initializeDebugLog();
     initializeEEPROM();

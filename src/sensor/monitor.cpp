@@ -62,22 +62,12 @@ void monitorDispenserState() {
                           " Drip Rate: " + String(dripRate) +
                           " Flow Rate: " + String(flowRate));
 
-    lcdClearVal();
-    lcd.setCursor(3, 0);
-    lcd.print(dripRate, 1);
-    lcd.setCursor(11, 0);
-    lcd.print(dripCount);
-    lcd.setCursor(3, 1);
-    lcd.print((uint16_t)abs(urineOut));
-    lcd.setCursor(11, 1);
-    lcd.print(position);
-
-    // setFlowRate(flowRate);
+        // setFlowRate(flowRate);
 }
 
 void monitorUrineOutput() {
     weightSamples.add(scale.get_units());
-    urineOut = weightSamples.getAverage();
+    urineOut = abs(weightSamples.getAverage());
     // debugMessage(INFO, "Urine Output: " + String(urineOut));
 }
 
@@ -87,6 +77,16 @@ void sendDispenserState() {
         dripRate,
         urineOut,
         alertMessage);
+
+    lcdClearVal();
+    lcd.setCursor(3, 0);
+    lcd.print(dripRate, 1);
+    lcd.setCursor(11, 0);
+    lcd.print(dripCount);
+    lcd.setCursor(3, 1);
+    lcd.print((uint16_t)urineOut);
+    lcd.setCursor(11, 1);
+    lcd.print(position);
 }
 
 void lcdTemplate()

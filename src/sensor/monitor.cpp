@@ -3,10 +3,12 @@
 // ... Drip Detector
 bool dripFlag = false;
 uint8_t dripCount = 0;
-float drippingThreshold = 0.19;
+float drippingThreshold = 0.003;
 float thresholdBuffer = 0;
 uint16_t elapsedTime = 0;
 float currentVal;
+float prevVal;
+float diffVal;
 unsigned long initTime = millis();
 
 // ... Load Cell
@@ -30,22 +32,52 @@ float movingAvg = 0.0;
 float oldMovingAvg = 0.0;
 
 void monitorDispenserState() {
-    currentVal = (float)pow((float)analogRead(SENSE_PIN) / 4096.0, 2);
-    
-    if (currentVal < drippingThreshold && !dripFlag)
+    // Dripping value calculation for differential value method
+
+    // Read Data
+    currentVal = ((float)analogRead(SENSE_PIN) / 4096.0);
+    diffVal = currentVal - prevVal;
+    diffVal = diffVal * diffVal;
+    prevVal = currentVal;
+    // Check for drip start
+    if (diffVal < drippingThreshold && !dripFlag)
     {
         dripSamples.add(millis() - initTime);
         initTime = millis();
         dripFlag = true;
         dripCount++;
     }
-    else if (currentVal > drippingThreshold && dripFlag)
+    // Check for drip end
+    else if (diffVal > drippingThreshold && dripFlag)
     {
-        if ((millis() - initTime) > DRIP_WIDTH_TOLERANCE) {
+        if ((millis() - initTime) > DRIP_WIDTH_TOLERANCE)
+        {
             dripFlag = false;
         }
     }
 
+    // Dripping value calculation for direct value method
+
+    // // Read data
+    // currentVal = (float)pow((float)analogRead(SENSE_PIN) / 4096.0, 2);
+    // // Check for drip start
+    // if (currentVal < drippingThreshold && !dripFlag)
+    // {
+    //     dripSamples.add(millis() - initTime);
+    //     initTime = millis();
+    //     dripFlag = true;
+    //     dripCount++;
+    // }
+    // // Check for drip end
+    // else if (currentVal > drippingThreshold && dripFlag)
+    // {
+    //     if ((millis() - initTime) > DRIP_WIDTH_TOLERANCE)
+    //     {
+    //         dripFlag = false;
+    //     }
+    // }
+
+    // Calculate drip rate and flow rate
     dripRate = 60000 / (float)dripSamples.getMedian();
     flowRate = dripRate * 3;
 
@@ -56,18 +88,23 @@ void monitorDispenserState() {
     //     oldMovingAvg = movingAvg;
     // }
 
-    debugMessage(INFO, "[ " + String(currentVal) + " ]" +
-                          " Threshold: " + String(drippingThreshold) +
-                          " Drip Count: " + String(dripCount) +
-                          " Drip Rate: " + String(dripRate) +
-                          " Flow Rate: " + String(flowRate));
+    // debugMessage(INFO, "[ " + String(diffVal) + " ]" +
+    //                       " Threshold: " + String(drippingThreshold) +
+    //                       " Drip Count: " + String(dripCount) +
+    //                       " Drip Rate: " + String(dripRate) +
+    //                       " Flow Rate: " + String(flowRate));
+    debugMessage(INFO, String(diffVal) + "," +
+                       String(drippingThreshold) + "," +
+                       String(dripCount) + "," +
+                       String(dripRate));
 
-        // setFlowRate(flowRate);
+    // setFlowRate(flowRate);
 }
 
 void monitorUrineOutput() {
     weightSamples.add(scale.get_units());
-    urineOut = abs(weightSamples.getAverage());
+    urineOut = weightSamples.getAverage();
+    if (urineOut < 0) urineOut = 0;
     // debugMessage(INFO, "Urine Output: " + String(urineOut));
 }
 

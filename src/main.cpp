@@ -45,12 +45,13 @@ void setup() {
         debugMessage(INFO, "Starting registration process ... ");
     }
 
-    for (uint8_t i = 0; i < 50; i++)
-    {
-        currentVal = (float)analogRead(SENSE_PIN) / 4096.0;
-        thresholdBuffer += currentVal * currentVal;
-    }
-    drippingThreshold = (thresholdBuffer / 50.0) - 0.02;
+    // Calibrate Threshold (not for differential value method)
+    // for (uint8_t i = 0; i < 50; i++)
+    // {
+    //     currentVal = (float)analogRead(SENSE_PIN) / 4096.0;
+    //     thresholdBuffer += currentVal * currentVal;
+    // }
+    // drippingThreshold = (thresholdBuffer / 50.0) - 0.02;
 }
 
 void loop() {

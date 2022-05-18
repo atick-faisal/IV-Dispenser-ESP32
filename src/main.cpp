@@ -15,7 +15,8 @@ extern float thresholdBuffer;
 extern HX711 scale;
 extern LiquidCrystal_I2C lcd;
 
-unsigned long looper = millis();
+unsigned long looper1 = millis();
+unsigned long looper2 = millis();
 
 void setup() {
     pinMode(RESET_PIN, INPUT);
@@ -45,7 +46,7 @@ void setup() {
         debugMessage(INFO, "Starting registration process ... ");
     }
 
-    // Calibrate Threshold (not for differential value method)
+    // Threshold calibration (N/A differential value method)
     // for (uint8_t i = 0; i < 50; i++)
     // {
     //     currentVal = (float)analogRead(SENSE_PIN) / 4096.0;
@@ -60,14 +61,17 @@ void loop() {
     } else {
         client.loop();
         if (mqttConnected) {
-            if (millis() > looper + REFRESH_INTERVAL) {
-                looper = millis();
+            if (millis() > looper1 + REFRESH_INTERVAL) {
+                looper1 = millis();
                 sendDispenserState();
             }
         }
         handleReset();
         handleStepperButton();
         monitorDispenserState();
-        monitorUrineOutput();
+        if (millis() > looper2 + REFRESH_INTERVAL/2) {
+            looper2 = millis();
+            monitorUrineOutput();
+        }
     }
 }

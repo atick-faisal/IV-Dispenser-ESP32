@@ -17,7 +17,7 @@ float scale_val = 0;
 extern int16_t position;
 
 HX711 scale;
-RunningMedian weightSamples = RunningMedian(20);
+RunningMedian weightSamples = RunningMedian(5);
 RunningMedian dripSamples = RunningMedian(N_DRIP);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -102,10 +102,18 @@ void monitorDispenserState() {
 }
 
 void monitorUrineOutput() {
-    weightSamples.add(scale.get_units());
-    urineOut = weightSamples.getAverage();
+    urineOut = 0.0;
+    for (uint8_t i = 0; i < 5; i++){
+        urineOut += scale.get_units();
+    }
+    urineOut = urineOut / 5;
     if (urineOut < 0) urineOut = 0;
-    // debugMessage(INFO, "Urine Output: " + String(urineOut));
+
+
+    // weightSamples.add(scale.get_units());
+    // urineOut = weightSamples.getAverage();
+    // if (urineOut < 0) urineOut = 0;
+    debugMessage(INFO, "Urine Output: " + String(urineOut));
 }
 
 void sendDispenserState() {

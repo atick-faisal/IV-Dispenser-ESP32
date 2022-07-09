@@ -13,7 +13,7 @@
 
 static const char BLUETOOTH_NAME[] = "I/V Dispenser";
 
-static const char BROKER_IP = "broker.emqx.io";
+static const char BROKER_IP[] = "broker.emqx.io";
 // static const char BROKER_IP[] = "192.168.0.110"; //"192.168.31.161";
 static const char BROKER_USER[] = "admin";
 static const char BROKER_PASS[] = "admin";

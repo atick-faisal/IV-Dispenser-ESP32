@@ -1,5 +1,3 @@
-if: branch = master
-
 language: python
 python:
     - "3.9"

@@ -40,18 +40,15 @@ void monitorDispenserState() {
     diffVal = diffVal * diffVal;
     prevVal = currentVal;
     // Check for drip start
-    if (diffVal < drippingThreshold && !dripFlag)
-    {
+    if (diffVal < drippingThreshold && !dripFlag) {
         dripSamples.add(millis() - initTime);
         initTime = millis();
         dripFlag = true;
         dripCount++;
     }
     // Check for drip end
-    else if (diffVal > drippingThreshold && dripFlag)
-    {
-        if ((millis() - initTime) > DRIP_WIDTH_TOLERANCE)
-        {
+    else if (diffVal > drippingThreshold && dripFlag) {
+        if ((millis() - initTime) > DRIP_WIDTH_TOLERANCE) {
             dripFlag = false;
         }
     }
@@ -94,21 +91,20 @@ void monitorDispenserState() {
     //                       " Drip Rate: " + String(dripRate) +
     //                       " Flow Rate: " + String(flowRate));
     debugMessage(INFO, String(diffVal) + "," +
-                       String(drippingThreshold) + "," +
-                       String(dripCount) + "," +
-                       String(dripRate));
+                           String(drippingThreshold) + "," +
+                           String(dripCount) + "," +
+                           String(dripRate));
 
     // setFlowRate(flowRate);
 }
 
 void monitorUrineOutput() {
     urineOut = 0.0;
-    for (uint8_t i = 0; i < 5; i++){
+    for (uint8_t i = 0; i < 5; i++) {
         urineOut += scale.get_units();
     }
     urineOut = urineOut / 5;
     if (urineOut < 0) urineOut = 0;
-
 
     // weightSamples.add(scale.get_units());
     // urineOut = weightSamples.getAverage();
@@ -134,8 +130,7 @@ void sendDispenserState() {
     lcd.print(position);
 }
 
-void lcdTemplate()
-{
+void lcdTemplate() {
     lcd.setCursor(3, 0);
     lcd.print("AUTOMATIC");
     lcd.setCursor(1, 1);
@@ -154,8 +149,7 @@ void lcdTemplate()
     lcd.print("MP:");
 }
 
-void lcdClearVal()
-{
+void lcdClearVal() {
     lcd.setCursor(3, 0);
     lcd.print("     ");
     lcd.setCursor(11, 0);

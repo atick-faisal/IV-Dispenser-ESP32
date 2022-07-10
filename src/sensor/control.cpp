@@ -29,15 +29,13 @@ void rotateCW(uint16_t steps) {
 }
 
 void handleStepperButton() {
-    while (!digitalRead(BUTTON_CCW))
-    {
+    while (!digitalRead(BUTTON_CCW)) {
         debugMessage(INFO, "CCW Button Pressed!");
         rotateCCW(1);
         delay(10);
     }
 
-    while (!digitalRead(BUTTON_CW))
-    {
+    while (!digitalRead(BUTTON_CW)) {
         debugMessage(INFO, "CW Button Pressed!");
         rotateCW(1);
         delay(10);
@@ -57,5 +55,6 @@ void setFlowRate(float flowRate) {
         }
     }
 
-    debugMessage(INFO, String(position) + "," + String(moveStep) + "," + String(flowRate));
+    debugMessage(
+        INFO, String(position) + "," + String(moveStep) + "," + String(flowRate));
 }

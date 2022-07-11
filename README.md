@@ -1,9 +1,20 @@
-# Automatic I/V-Dispenser-ESP32 <img src="https://app.travis-ci.com/atick-faisal/IV-Dispenser-ESP32.svg?branch=master"/>
+<h1 align="center">Automatic I/V Dispenser</h1>
+<h3 align="center">ESP32 Code for an Automatic I/V Dispenser Framework for Burn Patients</h3>
+
+<br>
+
+<p align="center">
+  <img src="https://img.shields.io/static/v1?label=Espressif&message=ESP32&style=for-the-badge&logo=espressif&labelColor=D84315&color=424242&logoColor=white"/>
+  <img src="https://img.shields.io/static/v1?label=Environment&message=PlatformIO&style=for-the-badge&logo=visual-studio-code&labelColor=1976D2&color=1565C0&logoColor=white"/>
+  <br>
+  <img src="https://img.shields.io/travis/atick-faisal/IV-Dispenser-ESP32?style=for-the-badge&logo=travis&labelColor=FFF3E0"/>
+</p>
+
 
 ## Working Principle
 
 <p align="center">
-  <img src="diagram.png"/>
+  <img src="diagram.svg"/>
 </p>
 
 ## License
